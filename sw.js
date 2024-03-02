@@ -4,6 +4,8 @@ const ASSETS = [
     //requests
     '/',
     '/index.html',
+    //fallback
+    '/pages/fallback.html',
     //scripts
     '/js/app.js',
     '/js/submit.js'
@@ -28,7 +30,7 @@ self.addEventListener('activate', evt => {
     evt.waitUntil(
         caches.keys().then(keys => {
             return Promise.all(keys
-                .filter(key => key !== STATIC_CACHE_NAME)
+                .filter(key => key !== STATIC_CACHE_NAME && key !== DYNAMIC_CACHE_NAME)
                 .map(key => caches.delete(key))
             )
         })
@@ -49,6 +51,21 @@ self.addEventListener('fetch', evt => {
                     return fetchRes;
                 });
             });
+        }).catch(() => {
+            caches.match('/pages/fallback.html');
         })
     );
 });
+
+//UN FALLBACK QUE SE PREGUNTE SI GUARDE ALGO EN INDEXDB??
+
+/*
+    APRETO BOTON DE SUBMIT
+    - SE GUARDA EN INDEXDB
+    - VERIFICO SI HAY CONEXION
+    - SI HAY CONEXION, ENVIO LOS DATOS DE INDEXDB
+    - SI NO HAY CONEXION, GUARDO EN INDEXDB
+    1- CUANDO HAY CONEXION, ENVIO LOS DATOS DE INDEXDB AUTOMATICAMENTE Y LOS ELIMINO DE INDEXDB
+    2- PODER REENVIAR CUANDO HAYA CONECCION
+    - ¿QUE SE ELIMINE DE INDEXDB SI SE MANDA EXITOSAMENTE AL SERVER?
+*/
