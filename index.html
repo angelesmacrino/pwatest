@@ -11,59 +11,59 @@
             margin-bottom: 25px;
         }
     </style>
-    <link rel="manifest" href="/manifest.json">
+    <link rel="manifest" crossorigin="use-credentials" href="manifest.json">
 </head>
 <body>
     <h1>
         Form
     </h1>
-    <form action="" method="post">
+    <form id="form" action="" method="post">
         <div>
             <label for="name">
                 Name
             </label>
-            <input id="name" type="text">
+            <input id="name" type="text" name="name">
         </div>
 
         <div>
             <label for="email">
                 Email
             </label>
-            <input id="email" type="email">
+            <input id="email" type="email" name="email">
         </div>
 
         <div>
             <label for="password">
                 Password
             </label>
-            <input id="password" type="password">
+            <input id="password" type="password" name="password">
         </div>
 
         <div>
             <label for="number">
                 Number
             </label>
-            <input id="number" type="number">
+            <input id="number" type="number" name="number">
         </div>
 
         <div>
             <label for="checkbox">
                 Checkbox
-                <input id="checkbox" type="checkbox">
+                <input id="checkbox" type="checkbox" name="checkbox">
             </label>
         </div>
 
         <div>
             <label for="radio">
                 Radio
-                <input id="radio" type="radio">
+                <input id="radio" type="radio" name="radio">
             </label>
         </div>
 
         <div>
             <label for="select">
                 Select
-                <select id="select">
+                <select id="select" name="select">
                     <option value="1">Option 1</option>
                     <option value="2">Option 2</option>
                     <option value="3">Option 3</option>
@@ -74,18 +74,18 @@
         <div>
             <label for="textarea">
                 Textarea
-                <textarea id="textarea"></textarea>
+                <textarea id="textarea" name="textarea"></textarea>
             </label>
         </div>
 
         <div>
             <label for="file">
                 File
-                <input id="file" type="file">
+                <input id="file" type="file" name="file">
             </label>
         </div>
 
-        <button id="submit">
+        <button type="submit" id="submit">
             Submit
         </button>
     </form>

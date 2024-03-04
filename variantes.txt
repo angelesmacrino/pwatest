@@ -1,0 +1,10 @@
+a) Cuando clickeo submit le mando el formData al serviceWorker directo
+    Problemas:
+        - Si no tengo https no puedo usar serviceWorker.controller, salvo que haga clients.claim(), pero si refresco la pagina falla a menos q instale de nuevo el serviceworker.
+
+b) Mandar a indexedDB y que el serviceWorker lo levante y lo mande al server
+    Problemas:
+        - No está funcionando el offline/online event listener (¿puede ser https?)
+            Pero funciona el event listener en app.js
+        
+        

@@ -25,6 +25,8 @@ function cacheApp() {
 }
 
 self.addEventListener('activate', evt => {
+    //TODO: si refresco a veces falla xq no hace clients.claim() de nuevo
+    clients.claim();
     //console.log('Service Worker has been activated');
     //delete old caches, loop and delete every cache that is not current cache
     evt.waitUntil(
@@ -40,19 +42,25 @@ self.addEventListener('activate', evt => {
 //fetch event
 
 self.addEventListener('fetch', evt => {
-    //me fjo si el request esta en el cache, si no lo agrego
     evt.respondWith(
         caches.match(evt.request)
         .then(cacheRes => {
             return cacheRes || fetch(evt.request).then(fetchRes => {
                 //stores the request in the dynamic cache
                 return caches.open(DYNAMIC_CACHE_NAME).then(cache => {
+                    //prevent chrome extension errors
+                    if(!evt.request.url.startsWith('http')){
+                        return fetchRes;
+                    }
                     cache.put(evt.request.url, fetchRes.clone());
                     return fetchRes;
                 });
             });
         }).catch(() => {
-            caches.match('/pages/fallback.html');
+            //in case of going offline
+            if(evt.request.url.indexOf('.html') > -1){
+                return caches.match('/pages/fallback.html');
+            }
         })
     );
 });
@@ -69,3 +77,26 @@ self.addEventListener('fetch', evt => {
     2- PODER REENVIAR CUANDO HAYA CONECCION
     - ¿QUE SE ELIMINE DE INDEXDB SI SE MANDA EXITOSAMENTE AL SERVER?
 */
+
+//receiviing post message from app.js
+
+self.addEventListener('message', event => {
+    if (event.data.action === 'submitForm') {
+      // Process form data here
+      console.log('Form data received in the service worker:', event.data.formData);
+      // Perform actions like sending data to the server, caching, etc.
+    }
+  });
+
+// Listen for the 'offline' event
+self.addEventListener('offline', (event) => {
+    // Handle the offline event
+    console.log('The application is offline.');
+  });
+  
+  // Listen for the 'online' event
+  self.addEventListener('online', (event) => {
+    // Handle the online event
+    console.log('The application is online.');
+  });
+  
